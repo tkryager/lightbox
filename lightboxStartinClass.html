@@ -23,7 +23,33 @@ p{
 	<script type="text/javascript" src="jquery-1.11.1.js"></script>
 	<script type="text/javascript">
 $(document).ready(function(){
+	$("#slideshow").append('<div class = "overlay"></div>');
+	$('.overlay').hide();
 
+	$('p.pic').click(function(e){
+		e.preventDefault();
+
+		//get path to the big image
+		var imagePath = $(this).children('a').attr('href');
+		console.log(imagePath);
+
+		//construct the markup to add to my document
+		var imageMarkup = '<img src = "' + imagePath + '" class = "big">';
+		console.log(imageMarkup);
+
+		//add the image to the overlay
+		$('.overlay').append(imageMarkup);
+
+		$('.overlay').fadeIn('slow');
+
+		//make the overlay go away
+		$(".overlay").click(function(e){
+			$(".overlay").fadeOut('slow', function(){
+				$('.overlay img').remove();
+				console.log("overlay hidden");
+			});//end fadeout
+		});//end click of overlay
+	});//end click of thumbnail image
 });//end ready
 	</script>
 </head>
