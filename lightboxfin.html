@@ -4,6 +4,111 @@
 <head>
     <title>lightbox</title>
     <style type="text/css">
+        
+/*PAGE STYLES*/
+    *{margin:0;padding:0;}    
+body{
+   
+background-image: url('img/wood.jpg');
+
+    
+}
+        
+h1{
+    text-align: center;
+    font-family: verdana;
+    color: gray;
+    font-size: 50px;
+}
+        
+    h2{
+    text-align: center;
+    font-family: verdana;
+    color: teal;
+    font-size: 33px;
+    line-height: 0px;
+}
+        
+@media only screen and (max-width: 580px) {
+    
+    h1{
+        font-size: 40px;
+    }
+    
+    h2{
+        font-size: 27px;
+    }
+
+ 
+}
+        
+
+/*BEGIN SLIDER STYLES*/
+        
+#slider {
+  position: relative;
+  overflow: hidden;
+  margin: 50px auto 0 auto;
+  border-radius: 25px;
+            top: 0;
+
+
+  
+}
+
+#slider ul {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  height: 530px;
+  list-style: none;
+
+}
+
+#slider ul li {
+  position: relative;
+  display: block;
+  float: left;
+  width: 250px;
+  height: 160px;
+  background: #ccc;
+  text-align: center;
+  line-height: 300px;
+
+}
+a.control_prev, a.control_next {
+  position: absolute;
+  top: 40%;
+  z-index: 999;
+  display: block;
+  padding: 2% 1%;
+  width: auto;
+  height: auto;
+  background: black;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 100px;
+  opacity: 0.3;
+  cursor: pointer;
+}
+
+a.control_prev:hover, a.control_next:hover {
+  opacity: .8;
+  -webkit-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+    
+}
+
+a.control_prev {
+  border-radius: 0 25px 25px 0;
+}
+
+a.control_next {
+  right: 0;
+  border-radius: 25px 0px 0px 25px;
+}
+        /*END SLIDER STYLES*/
         .overlay {
             width: 100%;
             height: 100%;
@@ -11,6 +116,7 @@
             position: absolute;
             left: 0;
             top: 0;
+            z-index: 1001;
         }
         .big {
             position: absolute;
@@ -18,6 +124,7 @@
             left: 50%;
             -webkit-transform: translate(-50%, -50%);
             transform: translate(-50%, -50%);
+            z-index: 1002;
         }
         p {
             display: inline-block;
@@ -40,7 +147,7 @@
         }
         #controls {
             /*background-color:red;*/
-            z-index: 1000;
+            z-index: 1500;
             position: absolute;
             top: 50%;
             left: 50%;
@@ -50,6 +157,65 @@
     </style>
     <script type="text/javascript" src="jquery-1.11.1.js"></script>
     <script type="text/javascript">
+        
+        
+        /*BEGIN SLIDER*/
+        
+        $(document).ready(function(){
+
+	var slideCount = $('#slider ul li').length;
+	var slideWidth = $('#slider ul li').width();
+	var slideHeight = $('#slider ul li').height();
+	var sliderUlWidth = slideCount * slideWidth;
+	
+	$('#slider').css({ width: slideWidth, height: slideHeight });
+	
+	$('#slider ul').css({ width: sliderUlWidth, marginLeft: - slideWidth });
+	
+    //move the last image to the left of the first image so if the user selects move right it will work
+    $('#slider ul li:last-child').prependTo('#slider ul');
+
+    function moveLeft() {
+        $('#slider ul').animate({
+            left: +slideWidth//"+=" +slideWidth+"px"
+        }, 2000, function () {
+            $('#slider ul li:last-child').prependTo('#slider ul');
+            $('#slider ul').css('left', '0px');
+        });
+        console.log($('#slider ul').css('left'));
+    };
+
+    function moveRight() {
+        $('#slider ul').animate({
+            left: -slideWidth//"-=" +slideWidth+"px"
+        }, 2000, function () {
+            $('#slider ul li:first-child').appendTo('#slider ul');
+            $('#slider ul').css('left', '0px');
+        });
+        resetTimer();
+    };
+   $('a.control_prev').click(function () {
+        moveLeft();
+        resetTimer();
+    });
+
+    $('a.control_next').click(function () {
+        moveRight();
+        resetTimer();
+    });
+
+    var slideTimer;
+
+    function resetTimer(){
+    	window.clearTimeout(slideTimer);
+    	slideTimer = window.setTimeout(moveRight, 5000);
+    }
+    resetTimer();
+
+});
+        
+        /*END SLIDER*/
+        
         $(document).ready(function () {
             $('#slideshow').append('<div class="overlay"></div>');
             $('.overlay').append('<div id = "controls"></div>');
@@ -200,23 +366,51 @@
 </head>
 
 <body>
+    <h1>Flower</h1>
+
+    <h2>Facts</h2>
+
+    <br />
+    <div id="slideshow">
+        <section id="slider">
+
+<!--
+  <a href="#" class="control_next">></a>
+  <a href="#" class="control_prev"><</a>
+-->
+
+<ul>
+    <li><p class="pic"><a href="img/moonflower.jpg" title="Moonflower"><img src="img/moonflower1.jpg"></a></p></li>
+    
+	<li><p class="pic"><a href="img/angelica1.jpg" title="Angelica"><img src="img/angelica.jpg"></a></p></li>
+    
+    <li><p class="pic"><a href="img/lotus.jpg" title="Lotus"><img src="img/lotus1.jpg"></a></p></li>
+
+     <li><p class="pic"><a href="img/tulip.jpg" title="Lotus"><img src="img/tulips1.jpg"></a></p></li>
+
+            </ul>
+      </section>
+        </div>
+<!--
+</div>
     <div id="slideshow">
         <p class="pic">
-            <a href="http://placecage.com/600/400" title="fred is a goofball.">
+            <a href="scene1.jpg" title="fred is a goofball.">
                 <img src="face_thumb.jpg">
             </a>
         </p>
         <p class="pic">
-            <a href="http://placekitten.com/500/200" title="shaggy is always hungry.">
+            <a href="scene2.jpg" title="shaggy is always hungry.">
                 <img src="face2_thumb.jpg">
             </a>
         </p>
         <p class="pic">
-            <a href="http://placekitten.com/900/1200" title="scooby is not a dog.">
+            <a href="scene3.jpg" title="scooby is not a dog.">
                 <img src="face3_thumb.jpg">
             </a>
         </p>
     </div>
+-->
 
 </body>
 
